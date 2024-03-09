@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.UI;
 
-public class CellButtonControler : MonoBehaviour
+public class CellButtonController : MonoBehaviour
 {
     public Sprite blankSprite;
     public Sprite circleSprite;

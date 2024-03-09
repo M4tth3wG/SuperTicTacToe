@@ -12,18 +12,6 @@ public class Board : MonoBehaviour
     public GameObject buttonPrefab;
     public GameObject[,] buttons;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Create(int size)
     {
         int pixels = pixelsPerCell * size;
@@ -47,9 +35,17 @@ public class Board : MonoBehaviour
         }
     }
 
+    public void Clear()
+    {
+        foreach (Transform child in transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+    }
+
     public void UpdateCell(Cell cell)
     {
         GameObject cellButton = buttons[cell.XPosition, cell.YPosition];
-        cellButton.GetComponent<CellButtonControler>().UpdateButton(cell.Sign);
+        cellButton.GetComponent<CellButtonController>().UpdateButton(cell.Sign);
     }
 }

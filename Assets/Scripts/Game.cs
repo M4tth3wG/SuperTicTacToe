@@ -9,28 +9,38 @@ public class Game : MonoBehaviour
     private bool isStoped = true;
     private bool playerTurn = true;
     private Cell.SignType playerSign = Cell.SignType.Cross;
+    private Cell.SignType enemySign = Cell.SignType.Circle;
     private int boardSize = 10;
     private Board board;
     private Cell[,] cells;
+    private EnemyController enemyController;
 
     void Awake()
     {
         board = GetComponentInChildren<Board>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    void Update()
     {
-        NewGame();
+        if (Input.GetButtonDown("Reset"))
+        {
+            NewGame();
+        }
     }
 
-    void NewGame()
+    public void NewGame()
     {
+        board.Clear();
+        boardSize = (int)GetComponentInChildren<Slider>().value;
+
         cells = CreateCells(boardSize);
         board.Create(boardSize);
 
+        enemyController = new EnemyController(cells);
+
         isStoped = false;
         playerTurn = true;
+
     }
 
     Cell[,] CreateCells(int size)
@@ -56,10 +66,17 @@ public class Game : MonoBehaviour
         {
             Cell currentCell = cells[x, y];
             currentCell.Sign = playerSign;
-            playerTurn = false;
+            //TODO uncoment
+            //playerTurn = false;
 
 
             board.UpdateCell(currentCell);
+            enemyController.UpdateAvailableCells(currentCell);
         }
+
+        Cell enemyCell = enemyController.PickNextCell();
+        enemyCell.Sign = enemySign; 
+        board.UpdateCell(enemyCell);
+        enemyController.UpdateAvailableCells(enemyCell);
     }
 }

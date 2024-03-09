@@ -21,4 +21,11 @@ public class Cell
         YPosition = y;
         Sign = SignType.Blank;
     }
+
+    public override bool Equals(object obj)
+    {
+        return obj is Cell cell &&
+               XPosition == cell.XPosition &&
+               YPosition == cell.YPosition;
+    }
 }
