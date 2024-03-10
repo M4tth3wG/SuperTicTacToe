@@ -23,11 +23,13 @@ public class Game : MonoBehaviour
     private EnemyController enemyController;
 
     public TextMeshProUGUI winMessageField;
+    public PanelController panelController;
 
     void Awake()
     {
         board = GetComponentInChildren<Board>();
         board.Hide();
+        panelController.SetPreGameButton();
     }
 
     void Update()
@@ -41,7 +43,8 @@ public class Game : MonoBehaviour
     public void NewGame()
     {
         board.Clear();
-        boardSize = (int)GetComponentInChildren<Slider>().value;
+        boardSize = (int)panelController.Slider.value;
+        panelController.SetInGameButton();
 
         cells = CreateCells(boardSize);
         board.Create(boardSize);
@@ -103,6 +106,7 @@ public class Game : MonoBehaviour
         isStoped = true;
         Debug.Log(message);
         winMessageField.text = message;
+        panelController.SetPostGameButton();
         board.Disable();
     }
 
