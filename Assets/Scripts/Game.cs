@@ -6,11 +6,14 @@ using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
+    private readonly Cell.SignType playerSign = Cell.SignType.Cross;
+    private readonly Cell.SignType enemySign = Cell.SignType.Circle;
+    private readonly int winCondition = 5;
+
     private bool isStoped = true;
-    private bool playerTurn = true;
-    private Cell.SignType playerSign = Cell.SignType.Cross;
-    private Cell.SignType enemySign = Cell.SignType.Circle;
     private int boardSize = 10;
+    private int turnCounter = 0;
+
     private Board board;
     private Cell[,] cells;
     private EnemyController enemyController;
@@ -39,8 +42,7 @@ public class Game : MonoBehaviour
         enemyController = new EnemyController(cells);
 
         isStoped = false;
-        playerTurn = true;
-
+        turnCounter = 0;
     }
 
     Cell[,] CreateCells(int size)
@@ -62,21 +64,102 @@ public class Game : MonoBehaviour
     {
         Debug.Log($"X: {x}, Y: {y}");
 
-        if (!isStoped && playerTurn)
+        if (!isStoped)
         {
+            turnCounter++;
+
             Cell currentCell = cells[x, y];
             currentCell.Sign = playerSign;
-            //TODO uncoment
-            //playerTurn = false;
-
 
             board.UpdateCell(currentCell);
             enemyController.UpdateAvailableCells(currentCell);
+
+            if (CheckWin(currentCell))
+            {
+                Debug.Log("Player wins!");
+                isStoped=true;
+            }
+            else if (turnCounter == boardSize * boardSize)
+            {
+                isStoped = true;
+                Debug.Log("Draw!");
+            }
+            else
+            {
+                EnemyTurn();
+            }
+        }
+    }
+
+    private void EnemyTurn()
+    {
+        Cell enemyCell = enemyController.PickNextCell();
+
+        if (enemyCell != null)
+        {
+            turnCounter++;
+            enemyCell.Sign = enemySign;
+            board.UpdateCell(enemyCell);
+            enemyController.UpdateAvailableCells(enemyCell);
         }
 
-        Cell enemyCell = enemyController.PickNextCell();
-        enemyCell.Sign = enemySign; 
-        board.UpdateCell(enemyCell);
-        enemyController.UpdateAvailableCells(enemyCell);
+        if (CheckWin(enemyCell))
+        {
+            Debug.Log("Enemy wins!");
+            isStoped = true;
+        }
+        else if (turnCounter == boardSize * boardSize)
+        {
+            isStoped = true;
+            Debug.Log("Draw!");
+        }
+    }
+
+    private bool CheckWin(Cell cell)
+    {
+        return
+            CheckLine(cell, 0, 1)
+            ||
+            CheckLine(cell, 1, 0)
+            ||
+            CheckLine(cell, 1, 1)
+            ||
+            CheckLine(cell, 1, -1);
+    }
+
+    private bool CheckLine(Cell cell, int xIncrement, int yIncrement)
+    {
+        return CountDirection(cell, xIncrement, yIncrement) + CountDirection(cell, xIncrement, yIncrement, true) == winCondition - 1;
+    }
+
+    private int CountDirection(Cell cell, int xIncrement, int yIncrement, bool reverse = false)
+    {
+        int counter = 0;
+        Cell currentCell = cell;
+
+        if (reverse)
+        {
+            xIncrement *= -1;
+            yIncrement *= -1;
+        }
+
+        int x = cell.XPosition + xIncrement;
+        int y = cell.YPosition + yIncrement;
+
+        for (; x >= 0 && y >= 0 && x < boardSize && y < boardSize; x += xIncrement, y += yIncrement)
+        {
+            currentCell = cells[x, y];
+
+            if (currentCell.Sign == cell.Sign)
+            {
+                counter++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return counter;
     }
 }
