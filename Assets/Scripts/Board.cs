@@ -1,24 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks.Sources;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Board : MonoBehaviour
 {
-    public readonly int pixelsPerCell = 32;
+    private readonly int pixelsPerCell = 48;
+    private readonly int spacePixels = 4;
 
     public GameObject buttonPrefab;
     public GameObject[,] buttons;
 
     public void Create(int size)
     {
-        int pixels = pixelsPerCell * size;
+        int pixels = pixelsPerCell * size + spacePixels * (size - 1);
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, pixels);
         GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, pixels);
 
         GetComponent<GridLayoutGroup>().constraintCount = size;
+        GetComponent<GridLayoutGroup>().cellSize = new Vector2(pixelsPerCell, pixelsPerCell);
+        GetComponent<GridLayoutGroup>().spacing = new Vector2(spacePixels, spacePixels);
 
         buttons = new GameObject[size, size];
 
@@ -41,6 +45,24 @@ public class Board : MonoBehaviour
         {
             GameObject.Destroy(child.gameObject);
         }
+    }
+
+    public void Disable()
+    {
+        foreach (Transform child in transform)
+        {
+            child.GetComponent<Button>().enabled = false;
+        }
+    }
+
+    public void Show()
+    {
+        GetComponent<Image>().enabled = true;
+    }
+
+    public void Hide()
+    {
+        GetComponent<Image>().enabled = false;
     }
 
     public void UpdateCell(Cell cell)

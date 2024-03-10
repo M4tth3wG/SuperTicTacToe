@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.Compression;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,9 @@ public class Game : MonoBehaviour
     private readonly Cell.SignType playerSign = Cell.SignType.Cross;
     private readonly Cell.SignType enemySign = Cell.SignType.Circle;
     private readonly int winCondition = 5;
+    private readonly string playerWinMessage = "Player wins!";
+    private readonly string enemyWinMessage = "Enemy wins!";
+    private readonly string tieWinMessage = "Tie!";
 
     private bool isStoped = true;
     private int boardSize = 10;
@@ -18,9 +22,12 @@ public class Game : MonoBehaviour
     private Cell[,] cells;
     private EnemyController enemyController;
 
+    public TextMeshProUGUI winMessageField;
+
     void Awake()
     {
         board = GetComponentInChildren<Board>();
+        board.Hide();
     }
 
     void Update()
@@ -38,11 +45,13 @@ public class Game : MonoBehaviour
 
         cells = CreateCells(boardSize);
         board.Create(boardSize);
+        board.Show();
 
         enemyController = new EnemyController(cells);
 
         isStoped = false;
         turnCounter = 0;
+        winMessageField.text = null;
     }
 
     Cell[,] CreateCells(int size)
@@ -76,19 +85,25 @@ public class Game : MonoBehaviour
 
             if (CheckWin(currentCell))
             {
-                Debug.Log("Player wins!");
-                isStoped=true;
+                FinishGame(playerWinMessage);
             }
             else if (turnCounter == boardSize * boardSize)
             {
-                isStoped = true;
-                Debug.Log("Draw!");
+                FinishGame(tieWinMessage);
             }
             else
             {
                 EnemyTurn();
             }
         }
+    }
+
+    private void FinishGame(string message)
+    {
+        isStoped = true;
+        Debug.Log(message);
+        winMessageField.text = message;
+        board.Disable();
     }
 
     private void EnemyTurn()
@@ -105,13 +120,11 @@ public class Game : MonoBehaviour
 
         if (CheckWin(enemyCell))
         {
-            Debug.Log("Enemy wins!");
-            isStoped = true;
+            FinishGame(enemyWinMessage);
         }
         else if (turnCounter == boardSize * boardSize)
         {
-            isStoped = true;
-            Debug.Log("Draw!");
+            FinishGame(tieWinMessage);
         }
     }
 
