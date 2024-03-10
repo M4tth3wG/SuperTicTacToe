@@ -32,14 +32,6 @@ public class Game : MonoBehaviour
         panelController.SetPreGameButton();
     }
 
-    void Update()
-    {
-        if (Input.GetButtonDown("Reset"))
-        {
-            NewGame();
-        }
-    }
-
     public void NewGame()
     {
         board.Clear();

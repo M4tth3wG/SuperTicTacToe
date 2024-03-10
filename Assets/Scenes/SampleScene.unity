@@ -1004,6 +1004,8 @@ GameObject:
   - component: {fileID: 1224942044}
   - component: {fileID: 1224942045}
   - component: {fileID: 1224942046}
+  - component: {fileID: 1224942048}
+  - component: {fileID: 1224942047}
   m_Layer: 5
   m_Name: ControlPanel
   m_TagString: Untagged
@@ -1126,6 +1128,98 @@ MonoBehaviour:
   sliderObject: {fileID: 170476102}
   startButtonObject: {fileID: 753919363}
   sizeDisplayFieldObject: {fileID: 167305599}
+--- !u!114 &1224942047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224942040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 153b01304f9a53144b3e234553d8e976, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1224942048}
+        m_TargetAssemblyTypeName: ControlPanelInput, Assembly-CSharp
+        m_MethodName: IncrementSlider
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7a1da0e5-cad7-40e5-80f3-d19a9b008d01
+    m_ActionName: ControlPanelActions/IncrementSize[/Keyboard/numpadPlus,/Keyboard/equals]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1224942048}
+        m_TargetAssemblyTypeName: ControlPanelInput, Assembly-CSharp
+        m_MethodName: DecrementSlider
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f144a993-56da-41ae-8b78-c1ebf92a2575
+    m_ActionName: ControlPanelActions/DecrementSize[/Keyboard/numpadMinus,/Keyboard/minus]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1224942048}
+        m_TargetAssemblyTypeName: ControlPanelInput, Assembly-CSharp
+        m_MethodName: RestartGame
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0ee76b94-61a9-4930-92fd-a9a943a66fcf
+    m_ActionName: ControlPanelActions/RestartGame[/Keyboard/r,/Keyboard/f5]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: ControlPanelActions
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1224942048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224942040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c958045ec165b364a8a6987bc4e617d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 170476104}
+  game: {fileID: 1932723873}
 --- !u!1 &1341135404
 GameObject:
   m_ObjectHideFlags: 0
